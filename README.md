@@ -24,5 +24,5 @@ gittweet is a simple python script that will query Github for specific repositor
 
   * Add gittweet.py to your crontab via `crontab -e`.  Remember, cron doesn't have access to shell variables, so don't use relative directories in the crontab task itself.
 
-`*/5 * * * * /home/earthmeLon/src/gittweet/gittweet.py`
+`*/5 * * * * /usr/bin/python /home/earthmeLon/src/gittweet/gittweet.py`
 
