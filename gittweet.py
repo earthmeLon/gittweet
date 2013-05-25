@@ -38,8 +38,10 @@ class github(object):
                     jsonx = json.loads(r.content)
                     commit = jsonx[0]['commit']['tree']['sha']
                     message = jsonx[0]['commit']['message']
-                    if len(message) > 140:
-                        message = message[:140]
+                    author = jsonx[0]['committer']['login']
+                    preText = '#Update from ' + author + ': '
+                    if len(message) > 140 - len(preText):
+                        message = message[:140 - len(preText)]
                 print commit + ': ' + message
                 state.execute("SELECT * FROM state WHERE commitx=? LIMIT 1", (commit,))
                 if state.fetchall():
@@ -47,7 +49,7 @@ class github(object):
                 else:
                     state.execute("INSERT into state (commitx) VALUES (?)", (commit,))
                     db.commit()
-                    subprocess.call([ttytter, '-keyf=' + keyfile, '-status=' + message])
+                    subprocess.call([ttytter, '-keyf=' + keyfile, '-status=' + preText + message])
             #return (commit, message)
         except Exception, e:
             print repo
